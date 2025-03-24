@@ -59,3 +59,19 @@ module.exports.userAuthentication = async (req, res) => {
         res.status(500).json({ error: "Error authenticating user." });
     }
 };
+
+module.exports.userDetails = async (req, res) => {
+    try {
+        const existingUser = await User.findById(req.user.id)
+
+        if (!existingUser) {
+            return res.status(400).json({ error: "User not found."})
+        }
+
+        req.user.password = "";
+        res.status(200).json({ user: req.user })
+    } catch (error) {
+        console.error("User details error:", error)
+        res.status(500).json({ error: "Error in fetching user data."})
+    }
+}
