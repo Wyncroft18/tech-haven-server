@@ -13,3 +13,22 @@ module.exports.getAllProducts = async (req, res) => {
         res.status(500).json({ error: "Error in finding products." });
     }
 };
+
+module.exports.addProduct = async (req, res) => {
+    try {
+        const { name, description, price } = req.body;
+
+        const existingProduct = await Product.findOne({ name });
+        if (existingProduct) {
+            return res.status(409).json({ error: "Product already exists." });
+        } else {
+            let newProduct = new Product({ name, description, price });
+
+            const result = await newProduct.save();
+            res.status(201).json(result);
+        }
+    } catch (error) {
+        console.error("Error in adding product:", error);
+        res.status(500).json({ error: "Error in adding product." });
+    }
+};

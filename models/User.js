@@ -12,11 +12,7 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false,
-    },
-    imgUrl: {
-        type: String,
-        required: [true, "Image is required."],
-    },
+    }
 });
 
 module.exports = mongoose.model("User", userSchema);
