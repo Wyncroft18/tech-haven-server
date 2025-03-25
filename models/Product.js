@@ -13,6 +13,14 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: [true, "Product price is required."],
     },
+    imgUrl: {
+        type: String,
+        required: [true, "Product image is required."],
+    },
+    alt: {
+        type: String,
+        required: [true, "Alt text is required for accessibility."],
+    },
 });
 
 module.exports = mongoose.model("Product", productSchema);

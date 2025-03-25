@@ -16,13 +16,13 @@ module.exports.getAllProducts = async (req, res) => {
 
 module.exports.addProduct = async (req, res) => {
     try {
-        const { name, description, price } = req.body;
+        const { name, description, price, imgUrl, alt } = req.body;
 
         const existingProduct = await Product.findOne({ name });
         if (existingProduct) {
             return res.status(409).json({ error: "Product already exists." });
         } else {
-            let newProduct = new Product({ name, description, price });
+            let newProduct = new Product({ name, description, price, imgUrl, alt });
 
             const result = await newProduct.save();
             res.status(201).json(result);
