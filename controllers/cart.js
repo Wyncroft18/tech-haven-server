@@ -57,7 +57,26 @@ module.exports.addToCart = async (req, res) => {
             res.status(201).json({ cart: result });
         }
     } catch (error) {
-        console.error("Can't add item", error);
-        res.status(500).json({ message: "Internal server error" });
+        console.error("Can't add item:", error);
+        res.status(500).json({ message: "Internal server error." });
     }
 };
+
+module.exports.getSingleCart = async (req, res) => {
+    try {
+
+        const userId = req.user.id
+
+        const existingCart = await Cart.findOne({ userId })
+
+        if (existingCart) {
+            res.status(200).json(existingCart)
+        } else {
+            res.status(404).json({ message: "Cart not found."})
+        }
+
+    } catch (error) {
+        console.log("Can't retrieve cart:", error)
+        res.status(500).json({ message: "Internal server error."})
+    }
+}
