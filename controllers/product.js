@@ -39,7 +39,7 @@ module.exports.addProduct = async (req, res) => {
     }
 };
 
-module.exports.singleProduct = async (req, res) => {
+module.exports.getSingleProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.productId);
 
