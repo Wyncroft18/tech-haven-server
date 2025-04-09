@@ -7,4 +7,6 @@ const router = express.Router();
 
 router.post("/add-to-checkout", verify, orderController.addToCheckout);
 
+router.get("/", verify, orderController.getUserOrder)
+
 module.exports = router;
