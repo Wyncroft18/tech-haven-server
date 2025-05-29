@@ -35,14 +35,28 @@ module.exports.addToCheckout = async (req, res) => {
 
 module.exports.getUserOrder = async (req, res) => {
     try {
-        const userId = req.user.id
+        const userId = req.user.id;
 
-        const userOrders = await Order.find({ userId })
+        const userOrders = await Order.find({ userId });
 
-        res.status(200).json({ userOrders })
-
+        res.status(200).json({ userOrders });
     } catch (error) {
         console.error("Error retrieving user order:", error);
+        res.send(500).json({ message: "Internal server error." });
+    }
+};
+
+module.exports.getAllOrders = async (req, res) => {
+    try {
+        const orders = await Order.find();
+
+        if (orders.length > 0) {
+            return res.status(200).json({ orders });
+        } else {
+            return res.status(200).json({ message: "No orders found." });
+        }
+    } catch (error) {
+        console.error("Error retrieving all orders:", error);
         res.send(500).json({ message: "Internal server error." });
     }
 };
