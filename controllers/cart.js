@@ -8,10 +8,6 @@ module.exports.addToCart = async (req, res) => {
 
         const existingProduct = await Product.findOne({ _id: productId });
 
-        if (!existingProduct) {
-            return res.status(404).json({ message: "Product not found." });
-        }
-
         const existingCart = await Cart.findOne({ userId });
 
         const name = existingProduct.name;
@@ -64,19 +60,17 @@ module.exports.addToCart = async (req, res) => {
 
 module.exports.getSingleCart = async (req, res) => {
     try {
+        const userId = req.user.id;
 
-        const userId = req.user.id
-
-        const existingCart = await Cart.findOne({ userId })
+        const existingCart = await Cart.findOne({ userId });
 
         if (existingCart) {
-            res.status(200).json(existingCart)
+            res.status(200).json(existingCart);
         } else {
-            res.status(404).json({ message: "Cart not found."})
+            res.status(404).json({ message: "Cart not found." });
         }
-
     } catch (error) {
-        console.log("Can't retrieve cart:", error)
-        res.status(500).json({ message: "Internal server error."})
+        console.log("Can't retrieve cart:", error);
+        res.status(500).json({ message: "Internal server error." });
     }
-}
+};
