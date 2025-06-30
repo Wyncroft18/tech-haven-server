@@ -3,13 +3,25 @@ const Product = require("../models/Product");
 
 exports.getAllProducts = async (req, res) => {
     try {
+        // find all products
         const products = await Product.find();
 
-        if (!products) {
-            return res.status(200).json({ message: "No products found." });
+        // if no product found return an error
+        if (!products.length > 0) {
+            return res.status(404).json({
+                status: "fail",
+                message: "No products found.",
+            });
         }
 
-        return res.status(200).json({ products });
+        // return the products
+        return res.status(200).json({
+            status: "success",
+            results: products.length,
+            data: {
+                products,
+            },
+        });
     } catch (error) {
         console.error("Error in finding all products:", error);
         res.status(500).json({ error: "Error in finding products." });

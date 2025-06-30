@@ -1,6 +1,6 @@
 const express = require("express");
 const productController = require("../controllers/product");
-const auth = require("../auth")
+const auth = require("../auth");
 
 const router = express.Router();
 
@@ -8,6 +8,6 @@ router.get("/", productController.getAllProducts);
 
 router.post("/", auth.verify, auth.verifyAdmin, productController.addProduct);
 
-router.get("/:productId", productController.getSingleProduct)
+router.get("/:productId", productController.getSingleProduct);
 
 module.exports = router;
