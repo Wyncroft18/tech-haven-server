@@ -17,21 +17,19 @@ module.exports.verify = (req, res, next) => {
 
     if (typeof token === "undefined") {
         return res.json({ auth: "Failed. No token." });
-    } else {
-        token = token.slice(7, token.length);
-
-        jwt.verify(token, secret, (err, decodedToken) => {
-            if (err) {
-                return res.json({
-                    auth: "Failed",
-                    message: err.message,
-                });
-            } else {
-                req.user = decodedToken;
-                next();
-            }
-        });
     }
+    token = token.slice(7, token.length);
+
+    jwt.verify(token, secret, (err, decodedToken) => {
+        if (err) {
+            return res.json({
+                auth: "Failed",
+                message: err.message,
+            });
+        }
+        req.user = decodedToken;
+        next();
+    });
 };
 
 module.exports.verifyAdmin = (req, res, next) => {

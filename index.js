@@ -9,8 +9,12 @@ const userRoutes = require("./routes/user");
 const cartRoutes = require("./routes/cart");
 const orderRoutes = require("./routes/order");
 
-const port = process.env.PORT;
 const app = express();
+const port = process.env.PORT;
+const DB = process.env.DATABASE.replace(
+    "<PASSWORD>",
+    process.env.DATABASE_PASSWORD,
+);
 
 // middlewares
 app.use(express.json());
@@ -18,9 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // mongodb
-mongoose.connect(process.env.MONGODB_CONNECT_URI);
+mongoose.connect(DB);
 mongoose.connection.once("open", () =>
-    console.log("Now connected to MongoDB Atlas.")
+    console.log("Now connected to MongoDB Atlas."),
 );
 
 // routes
