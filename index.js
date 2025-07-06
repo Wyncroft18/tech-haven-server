@@ -4,6 +4,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+const AppError = require("./utils/AppError");
+const globalErrorHandler = require("./controllers/globalErrorHandler");
 const productRoutes = require("./routes/product");
 const userRoutes = require("./routes/user");
 const cartRoutes = require("./routes/cart");
@@ -32,6 +34,10 @@ app.use("/products", productRoutes);
 app.use("/users", userRoutes);
 app.use("/carts", cartRoutes);
 app.use("/orders", orderRoutes);
+app.all("*", (req, res, next) => {
+    next(new AppError(`Can't find ${req.originalUrl} in this server!`, 404));
+});
+app.use(globalErrorHandler);
 
 if (require.main === module) {
     app.listen(port, () => {
