@@ -15,13 +15,12 @@ module.exports.addToCart = async (req, res) => {
         // get the cart
         const existingCart = await Cart.findOne({ userId });
 
-        const name = existingProduct.name;
-        const price = existingProduct.price;
+        const { name, price } = existingProduct;
 
         // If cart does not exist, create one
         if (!existingCart) {
             // create object for cart items
-            let cartItems = [
+            const cartItems = [
                 {
                     productId: productId,
                     name: name,
@@ -31,12 +30,12 @@ module.exports.addToCart = async (req, res) => {
             ];
 
             // create a new cart
-            let newCart = new Cart({
+            const newCart = new Cart({
                 userId: userId,
                 cartItems: cartItems,
                 totalPrice: cartItems.reduce(
                     (total, item) => total + item.subtotal,
-                    0
+                    0,
                 ),
             });
 
@@ -88,7 +87,7 @@ module.exports.addToCart = async (req, res) => {
             // Get the total
             existingCart.totalPrice = existingCart.cartItems.reduce(
                 (total, item) => total + item.subtotal,
-                0
+                0,
             );
 
             // save cart
