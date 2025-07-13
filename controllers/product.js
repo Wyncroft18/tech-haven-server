@@ -6,7 +6,7 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
     // find all products
     const products = await Product.find();
 
-    // return the products
+    // send response
     return res.status(200).json({
         status: "success",
         results: products.length,
@@ -16,36 +16,35 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.addProduct = async (req, res) => {
-    try {
-        const { name, description, price, imgUrl, alt } = req.body;
+exports.addProduct = catchAsync(async (req, res, next) => {
+    const { name, description, price, imgUrl, alt } = req.body;
 
-        const existingProduct = await Product.findOne({ name });
+    // create new product
+    const newProduct = new Product({
+        name,
+        description,
+        price,
+        imgUrl,
+        alt,
+    });
 
-        if (existingProduct) {
-            return res.status(409).json({ error: "Product already exists." });
-        }
+    // save product to DB
+    const result = await newProduct.save();
 
-        const newProduct = new Product({
-            name,
-            description,
-            price,
-            imgUrl,
-            alt,
-        });
-
-        const result = await newProduct.save();
-        res.status(201).json(result);
-    } catch (error) {
-        console.error("Error in adding product:", error);
-        res.status(500).json({ error: "Error in adding product." });
-    }
-};
+    // send response
+    res.status(201).json({
+        status: "success",
+        data: {
+            result,
+        },
+    });
+});
 
 exports.getSingleProduct = catchAsync(async (req, res, next) => {
     // find product
     const product = await Product.findById(req.params.productId);
 
+    // send response
     return res.status(200).json({
         status: "success",
         data: product,
